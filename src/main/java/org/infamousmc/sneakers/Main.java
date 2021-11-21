@@ -7,7 +7,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -19,6 +18,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public final class Main extends JavaPlugin implements Listener {
 
@@ -58,13 +58,13 @@ public final class Main extends JavaPlugin implements Listener {
 
     public ItemStack getItem() {
 
-        Material type;
         ItemStack sneakers = new ItemStack(Material.LEATHER_BOOTS);
         ItemMeta m = sneakers.getItemMeta();
         LeatherArmorMeta meta = (LeatherArmorMeta) m;
 
+        assert meta != null;
         meta.setDisplayName(ChatColor.LIGHT_PURPLE + "Sneakers");
-        List<String> lore = new ArrayList<String>();
+        List<String> lore = new ArrayList<>();
         lore.add(ChatColor.GRAY + "" + ChatColor.ITALIC + "Shiny new kicks!");
         lore.add(ChatColor.GRAY + "" + ChatColor.ITALIC + "Press shift and see what happens!");
         meta.setLore(lore);
@@ -81,25 +81,12 @@ public final class Main extends JavaPlugin implements Listener {
         return sneakers;
     }
 
-    //Check if a player is jumping
-//    @EventHandler
-//    public void onJump(PlayerMoveEvent event) {
-//        Player player = (Player) event.getPlayer();
-//        if (player.getInventory().getBoots() != null)
-//            if (player.getInventory().getBoots().getItemMeta().getDisplayName().contains("Sneakers"))
-//                if (player.getInventory().getBoots().getItemMeta().hasLore())
-//                    if (event.getFrom().getY() < event.getTo().getY() &&
-//                    player.getLocation().subtract(0, 1, 0).getBlock().getType() != Material.AIR) {
-//
-//                    }
-//    }
-
     @EventHandler
     public void onSneak(PlayerToggleSneakEvent event) {
-        Player player = (Player) event.getPlayer();
+        Player player = event.getPlayer();
         boolean isSneaking = player.isSneaking();
         if (player.getInventory().getBoots() != null)
-            if (player.getInventory().getBoots().getItemMeta().getDisplayName().contains("Sneakers"))
+            if (Objects.requireNonNull(player.getInventory().getBoots().getItemMeta()).getDisplayName().contains("Sneakers"))
                 if (player.getInventory().getBoots().getItemMeta().hasLore())
                     if (player.getInventory().getBoots().getItemMeta().hasEnchant(Enchantment.ARROW_INFINITE))
                         if (isSneaking) {
