@@ -1,0 +1,9 @@
+name: Sneakers
+version: '${project.version}'
+main: org.infamousmc.sneakers.Main
+api-version: 1.13
+authors: [ devJordan ]
+description: Basic Tutorial (Ep5)
+
+commands:
+  Sneakers:
